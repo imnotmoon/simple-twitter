@@ -224,3 +224,36 @@ const App = () => {
     </div>
   );
 }
+
+
+// useBeforeLeave : y축 방향으로 0보다 작을 경우에만(top) 작동하도록 최적화
+// useEffectf를 사용해서 browser에 eventListener를 부착했다가 뗌.
+const useBeforeLeave = (onBefore) => {
+  if (typeof onBefore !== "function") {
+    return;
+  }
+
+  const handle = (event) => {
+    // top 방향으로 마우스가 벗어날 경우에만 작동하도록
+    const { clientY } = event;
+    if (clientY <= 0) {
+      onBefore();
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mouseleave", handle);
+
+    // only when unmount
+    return () => document.removeEventListener("mouseleave", handle);
+  });
+};
+
+export default function App() {
+  const begForLife = () => console.log("please");
+  useBeforeLeave(begForLife);
+  return (
+    <div className="App">
+      <h1>hello</h1>
+    </div>
+  );
+}
