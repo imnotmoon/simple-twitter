@@ -123,3 +123,79 @@ const App = () => {
     </div>
   );
 };
+
+
+/// useClick, useRef
+// useRef : getElementById와 유사하게 컴포넌트를 지정할 수 있음.
+const useClick = (onClick) => {
+
+  // useClick이 할당된 component와 연결
+  const element = useRef();
+
+
+  useEffect(() => {
+    if (element.current) {
+      console.log("asdfasdf");
+      element.current.addEventListener("click", onClick);
+    }
+
+    // same as componentWillUnMount
+    // useEffect 내에서 리턴받은 함수는 componentWillUnmount 단계에서 수행됨.
+    return () => {
+      if (element.current) {
+        element.current.removeEventListener("click", onClick);
+      }
+    };
+    // dependency가 있으면 클릭될때마다 이벤트리스너가 붙음.
+    // 단지 componentDidMount 시점에만 eventListenner가 붙어야함.
+  }, []);
+  return element;
+};
+
+const App = () => {
+  // 인자로 넘길 콜백함수
+  const sayHello = () => console.log("say hello");
+
+  // useRef : getElementById...
+  // ref가 title인 component에 연결
+  const title = useClick(sayHello);
+
+  return (
+    <div className="App">
+      <h1 ref={title}>Hello</h1>
+    </div>
+  );
+}
+
+
+/// useConfirm : 딱히 hook을 사용하는 개념은 아님
+const useConfirm = (message = "", callback, rejection) => {
+  // check callback, rejection validation
+  if (callback && typeof callback !== "function") {
+    return;
+  }
+  if (rejection && typeof callback !== "function") {
+    return;
+  }
+  const confirmAction = () => {
+    if (confirm(message)) {
+      callback();
+    } else {
+      rejection();
+    }
+  };
+  return confirmAction;
+};
+
+const App = () => {
+  const deleteWorld = () => console.log("Deleteing the world");
+  const abort = () => console.log("Aboted");
+  const confirmDelete = useConfirm("Are you sure?", deleteWorld, abort);
+  return (
+    <div className="App">
+      <button onClick={confirmDelete}>Delete the world</button>
+    </div>
+  );
+}
+
+
