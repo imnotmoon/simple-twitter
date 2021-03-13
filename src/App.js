@@ -75,3 +75,51 @@ const App = () => {
 
 
 /// useEffect
+const App = () => {
+  const [number, setNumber] = useState(0)
+  const [aNumber, setAnumber] = useState(0)
+
+  useEffect(() => {
+    console.log("Hello")
+  }, [number])
+
+  return (
+    <div>
+      <h1>Hello</h1>
+      <button onClick={() => setNumber(number+1)}>{number}</button>
+      <button onClick={() => setAnumber(aNumber+1)}>{aNumber}</button>
+    </div>
+  )
+}
+
+
+// useTitle
+// hook for update window's title
+const useTitle = (initialTitle) => {
+  const [title, setTitle] = useState(initialTitle);
+
+  const updateTitle = () => {
+    const htmlTitle = document.querySelector("title");
+    console.log(htmlTitle.innerText);
+    htmlTitle.innerText = title;
+  };
+
+  useEffect(updateTitle, [title]);
+  return setTitle;
+};
+
+const App = () => {
+  // useTitle의 state를 바꾼 것으로 useEffect로 하여금 title을 수정
+  const titleUpdater = useTitle("Loading...");
+
+  // 5초 뒤에 타이틀 변경
+  setTimeout(() => {
+    titleUpdater("Home");
+  }, 5000);
+
+  return (
+    <div className="App">
+      <h1>Hello</h1>
+    </div>
+  );
+};
