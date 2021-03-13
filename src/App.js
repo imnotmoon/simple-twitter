@@ -19,7 +19,7 @@ const useInput = (initialValue, validator) => {
   return { value, onChange };
 };
 
-export default App = () => {
+const App = () => {
   const [item, setItem] = useState(1);
   const incrementItem = () => {
     setItem(item + 1);
@@ -59,7 +59,7 @@ const useTabs = (initialTab, allTabs) => {
   };
 };
 
-export default App = () => {
+const App = () => {
   const { currentItem, changeItem } = useTabs(0, content);
   return (
     <div className="App">
@@ -72,3 +72,6 @@ export default App = () => {
     </div>
   );
 };
+
+
+/// useEffect
