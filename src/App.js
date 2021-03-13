@@ -171,10 +171,10 @@ const App = () => {
 /// useConfirm : 딱히 hook을 사용하는 개념은 아님
 const useConfirm = (message = "", callback, rejection) => {
   // check callback, rejection validation
-  if (callback && typeof callback !== "function") {
+  if (!callback && typeof callback !== "function") {
     return;
   }
-  if (rejection && typeof callback !== "function") {
+  if (!rejection && typeof callback !== "function") {
     return;
   }
   const confirmAction = () => {
@@ -199,3 +199,28 @@ const App = () => {
 }
 
 
+/// usePreventLeave
+const usePreventLeave = () => {
+  const listener = (event) => {
+    event.preventDefault();
+    
+    // 사이트를 나갈때 return function을 무효화
+    event.returnValue = "";
+  };
+  const enablePrevent = () => window.addEventListener("beforeunload", listener);
+  const disablePrevent = () =>
+    window.addEventListener("beforeunload", listener);
+
+  return [enablePrevent, disablePrevent];
+};
+
+const App = () => {
+  const [protect, unprotect] = usePreventLeave();
+  return (
+    <div className="App">
+      <h1>hello</h1>
+      <button onClick={protect}>Protect</button>
+      <button onClick={unprotect}>Unprotect</button>
+    </div>
+  );
+}
