@@ -1,10 +1,16 @@
 import React from 'react'
+import { authService } from '../fbInstance'
 
 function Profile() {
+
+    const onLogOutclick = () => {
+        authService.signOut()
+    }
+
     return (
-        <div>
-            Profile
-        </div>
+        <>
+            <button onClick={onLogOutclick}>Log Out</button>
+        </>
     )
 }
 
