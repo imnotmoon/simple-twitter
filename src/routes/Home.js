@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { authService, dbService } from '../fbInstance'
 
-function Home() {
+function Home({ userObj }) {
 
     const [tweet, setTweet] = useState("")
     const [tweets, setTweets] = useState([])
@@ -15,7 +15,6 @@ function Home() {
             }
             setTweets((prev) => [tweetObject, ...prev])
         })
-        console.log(tweets)
     }
 
     useEffect(() => {
@@ -24,9 +23,11 @@ function Home() {
 
     const onSubmit = async (event) => {
         event.preventDefault()
+        console.log(userObj)
         await dbService.collection("Tweets").add({
-            tweet,
+            text: tweet,
             createdAt: Date.now(),
+            creatorId: userObj.uid
         })
         setTweet("")
     }

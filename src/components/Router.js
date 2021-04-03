@@ -5,7 +5,9 @@ import Auth from '../routes/Auth'
 import Home from '../routes/Home'
 import Profile from '../routes/Profile'
 
-const AppRouter = ({ isLoggedIn }) => {
+const AppRouter = ({ isLoggedIn, userObj }) => {
+
+    console.log(userObj)
     // prop isLoggedIn : 비동기로 로그인 상황을 받아와서 다른 화면을 렌더링
     return (
         <Router>
@@ -15,7 +17,7 @@ const AppRouter = ({ isLoggedIn }) => {
                     (<>
                         {/* 로그인된 상태라면 Home으로 */}
                         <Route exact path="/">
-                            <Home />
+                            <Home userObj={userObj} />
                         </Route>
                         <Route exact path="/profile">
                             <Profile />
