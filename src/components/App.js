@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react'
 import AppRouter from 'components/Router'
 import { authService } from '../fbInstance'
 
+export const UserContext = React.createContext()
+
 function App() {
   const [init, setInit] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userObj, setUserObj] = useState(null);
+  const [userObj, setUserObj] = useState({})
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
       if (user) {
         console.log(user)
-        setIsLoggedIn(true);
-        setUserObj({ ...user })
-
-        console.log("핫리로드할라고 추가함 : ", userObj)
-
+        setIsLoggedIn(true)
+        setUserObj(user)
+        console.log(userObj)
       } else {
         setIsLoggedIn(false)
       }
@@ -24,7 +24,7 @@ function App() {
   }, [])
   return (
     <>
-      {init ? <AppRouter isLoggedIn={isLoggedIn} useObj={userObj} /> : "Initializing"}
+      {init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> : "Initializing"}
       <footer>&copy; {new Date().getFullYear()} Twitter</footer>
     </>
   )

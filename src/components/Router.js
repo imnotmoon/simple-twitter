@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 import Navigation from './Navigation'
 import Auth from '../routes/Auth'
@@ -7,7 +7,6 @@ import Profile from '../routes/Profile'
 
 const AppRouter = ({ isLoggedIn, userObj }) => {
 
-    console.log(userObj)
     // prop isLoggedIn : 비동기로 로그인 상황을 받아와서 다른 화면을 렌더링
     return (
         <Router>
