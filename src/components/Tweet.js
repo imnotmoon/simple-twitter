@@ -1,4 +1,4 @@
-import { dbService } from 'fbInstance'
+import { dbService, storageService } from 'fbInstance'
 import React, { useState, useEffect } from 'react'
 
 function Tweet({ tweetObj, isOwner }) {
@@ -11,6 +11,7 @@ function Tweet({ tweetObj, isOwner }) {
         const ok = window.confirm("Are you sure?")
         if (ok) {
             // delete tweet
+            await storageService.refFromURL(tweetObj.attachmentUrl).delete()
             await dbService.doc(`Tweets/${tweetObj.id}`).delete()
         }
     }
@@ -30,7 +31,6 @@ function Tweet({ tweetObj, isOwner }) {
         setEditing(false)
     }
 
-    console.log(isOwner)
     return (
         <div>
             {
@@ -51,6 +51,7 @@ function Tweet({ tweetObj, isOwner }) {
                     :
                     <>
                         <h4>{tweetObj.text}</h4>
+                        { tweetObj.attachmentUrl && <img src={tweetObj.attachmentUrl} alt="" width="300px" />}
                         {isOwner && <>
                             <button onClick={onDeleteClick}>Delete Tweet</button>
                             <button onClick={toggleEditing}>Edit Tweet</button>
